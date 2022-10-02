@@ -51,9 +51,7 @@ body {
 }	
 .form-container{
   width: 450px;
-  position: fixed; 
-  right: 10px;
-  top: 10px;
+  margin: auto;
   height: calc(100% - 10px);
   padding: 50px 50px;
   display: flex;
@@ -67,19 +65,6 @@ body {
 .form{
   width: 100%;
   text-align: center;
-}
-.image-container{
-  width: calc(100% - 450px);
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-.image-container-right {
-  margin-left: 450px;
-}
-.image{
-  width: 60%;
-  margin: auto;
 }
 @media (max-width: 767px) {
   .form-container{

@@ -5,17 +5,45 @@ import SelectSearch from "../UI/atoms/select_search";
 // Antd
 import { Typography, DatePicker, Card, Button, Row, Col, Alert, Divider, Form, Input } from 'antd';
 import { PlusCircleFilled, SendOutlined } from '@ant-design/icons';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ContextAuth } from "../../shared/context/auth_context";
 import { SelectType } from "../../shared/models/select.type";
 import FormProducts from "../form_products";
+import { profileService } from "../../shared/services/login.service";
 
 const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
+const cutData: SelectType[] = [
+  {
+    label: "Semanal",
+    value: "Semanal"
+  },
+  {
+    label: "Quincenal",
+    value: "Quincenal"
+  },
+  {
+    label: "Mensual",
+    value: "Mensual"
+  }
+]
+
 const FormPromotor = () => {
   const [ form ] = Form.useForm();
   const { auth } = useContext(ContextAuth);
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
+
+  const getProfileData = async () => {
+    const profileData = await profileService();
+    if (profileData) {
+      form.setFieldValue('distCode', profileData.distCode);
+      form.setFieldValue('distName', profileData.distName);
+    }
+  }
 
   const sendForm = async () => {
     const data = await form.validateFields();
@@ -23,7 +51,12 @@ const FormPromotor = () => {
   }
 
   const changeClient = (register: SelectType) => {
-    form.setFieldValue('listCode', register.extra?.idList);
+    form.setFieldValue('idList', register.extra?.idList);
+  }
+
+  const getExtraData = () => {
+    const { promotor, client, idList } = form.getFieldsValue();
+    return { promotor, client, idList };
   }
   
   return (
@@ -77,13 +110,13 @@ const FormPromotor = () => {
                     name="client"
                     rules={[{ required: true, message: 'Por favor seleccione el cliente' }]}
                   >
-                    <SelectSearch placeholder="Buscar cliente" endpoint="clients" parentChange={changeClient} />
+                    <SelectSearch placeholder="Buscar cliente" endpoint="clients" parentChange={changeClient} getExtraData={getExtraData} />
                   </Form.Item>
                 </Col>
                 <Col xs={8}>
                   <Form.Item
                     label="Cod. Lista"
-                    name="listCode"
+                    name="idList"
                   >
                     <Input placeholder="Código lista" disabled />
                   </Form.Item>
@@ -96,7 +129,7 @@ const FormPromotor = () => {
                 name="cut_type"
                 rules={[{ required: true, message: 'Por favor seleccione el tipo de corte' }]}
               >
-                <SelectSearch placeholder="Buscar tipo de corte" endpoint="cut_type" />
+                <SelectSearch placeholder="Seleccione tipo de corte" initialData={cutData} />
               </Form.Item>
               <Form.Item
                 label={['Rango de fechas']}
@@ -107,7 +140,7 @@ const FormPromotor = () => {
               </Form.Item>
             </Card>
           </Form>
-          <FormProducts />
+          <FormProducts getExtraData={getExtraData} />
           <Divider />
           <Button type="primary" icon={<SendOutlined />} onClick={sendForm}>Enviar</Button>
         </Col>

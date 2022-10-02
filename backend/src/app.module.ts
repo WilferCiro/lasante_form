@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import config from './common/database/config';
 import { AuthModule } from './module/auth/auth.module';
 import { ClientsModule } from './module/clients/clients.module';
+import { SucursalsModule } from './module/sucursals/sucursals.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ClientsModule } from './module/clients/clients.module';
     ClientsModule,
     TypeOrmModule.forRoot({ ...config, autoLoadEntities: true }),
     AuthModule,
+    SucursalsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

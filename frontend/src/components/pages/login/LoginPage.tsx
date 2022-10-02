@@ -33,18 +33,6 @@ const LoginPage = () => {
   return (
     <div className="login">
 
-      <div className="image-container">
-				<div className="image">
-					<img
-						placeholder="blur"
-						src={"/img/logo.png"}
-						width="757"
-						height="305"
-						alt="Logo de lasanté"
-					/>
-				</div>
-			</div>
-
 			<ul className="squares">
 				<li></li>
 				<li></li>
@@ -60,10 +48,13 @@ const LoginPage = () => {
 
       <div className="form-container">
         <div className="form">
+					<img
+						placeholder="blur"
+						src={"/img/logo.png"}
+						alt="Logo de lasanté"
+            style={{ width: '90%'}}
+					/>
           <h2>Iniciar sesión</h2>
-          <Avatar style={{ backgroundColor: 'red', verticalAlign: 'middle' }} size="large" shape="square" >
-            I
-          </Avatar>
           <Divider />
           <Form
             form={form}

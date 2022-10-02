@@ -10,12 +10,14 @@ interface SelectInputProps {
   placeholder?: string;
   value?: number | string;
   onChange?: (value: number | string) => void;
-  endpoint: string;
+  endpoint?: string;
   parentChange?: (register: SelectType) => void;
+  getExtraData?: () => any;
+  initialData?: SelectType[];
 }
 
-const SelectSearch: FC<SelectInputProps> = ({ value = undefined, onChange, placeholder, endpoint, parentChange }) => {
-  const [data, setData] = useState<SelectType[]>([]);
+const SelectSearch: FC<SelectInputProps> = ({ value = undefined, onChange, placeholder, endpoint, parentChange, getExtraData, initialData = [] }) => {
+  const [data, setData] = useState<SelectType[]>(initialData);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -38,10 +40,16 @@ const SelectSearch: FC<SelectInputProps> = ({ value = undefined, onChange, place
   };
 
   const handleSearch = async (newValue: string) => {
-    setLoading(true);
-    const data = await selectService(newValue, endpoint);
-    setData(data);
-    setLoading(false);
+    if (endpoint) {
+      setLoading(true);
+      let extra;
+      if(getExtraData) {
+        extra = getExtraData();
+      }
+      const data = await selectService(newValue, endpoint, extra);
+      setData(data);
+      setLoading(false);
+    }
   };
 
   return (
