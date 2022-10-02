@@ -2,14 +2,15 @@
     "private": true,
     "name": "example-monorepo",
     "engines": {
-        "node": "18.10.0"
+        "node": "16"
     },
     "scripts": {
-        "client": "yarn workspace client start",
-        "start:server": "yarn workspace backend start:dev"
+        "dev:client": "yarn workspace frontend dev",
+        "dev:server": "yarn workspace backend start:dev"
     },
     "workspaces": ["backend", "frontend"],
     "dependencies": {
+      "@nestjs/mapped-types": "*",
         "concurrently": "4.1.0"
     }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "form",
+  "name": "frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,23 +9,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "antd": "^4.23.3",
+    "axios": "^0.27.2",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^2.1.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.1.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^8.0.1",
     "eslint-config-airbnb-typescript-prettier": "^5.0.0",
     "eslint-config-standard-with-typescript": "^22.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-react": "^7.30.1"
+    "eslint-plugin-react": "^7.30.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
   }
 }
