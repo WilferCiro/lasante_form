@@ -2,10 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.variable.min.css';
 import axios from 'axios';
 import ContextProviderAuth from './shared/context';
 import { BrowserRouter } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
 
 axios.interceptors.request.use(
   (req) => {
@@ -22,18 +23,11 @@ axios.interceptors.request.use(
   }
 );
 
-// For POST requests
-axios.interceptors.response.use(
-  (res) => {
-    if (res.status === 201) {
-      console.log('Posted Successfully');
-    }
-    return res;
+ConfigProvider.config({
+  theme: {
+    primaryColor: '#222D60',
   },
-  (err) => {
-    return Promise.reject(err);
-  }
-);
+});
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

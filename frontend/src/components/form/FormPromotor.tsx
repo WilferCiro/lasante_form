@@ -3,13 +3,16 @@
 import SelectSearch from "../UI/atoms/select_search";
 
 // Antd
-import { Typography, DatePicker, Card, Button, Row, Col, Alert, Divider, Form, Input } from 'antd';
+import { Typography, DatePicker, Card, Button, Row, Col, Alert, Divider, Form, Input, message } from 'antd';
 import { PlusCircleFilled, SendOutlined } from '@ant-design/icons';
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { ContextAuth } from "../../shared/context/auth_context";
 import { SelectType } from "../../shared/models/select.type";
 import FormProducts from "../form_products";
 import { profileService } from "../../shared/services/login.service";
+import { FormProductRef } from "../form_products/FormProducts";
+import { ingestService, ProductInterface } from "../../shared/services/ingest.service";
+import Resume from "../resume";
 
 const { Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -32,6 +35,7 @@ const cutData: SelectType[] = [
 const FormPromotor = () => {
   const [ form ] = Form.useForm();
   const { auth } = useContext(ContextAuth);
+  const formProductRef = useRef<FormProductRef>(null);
 
   useEffect(() => {
     getProfileData();
@@ -47,7 +51,16 @@ const FormPromotor = () => {
 
   const sendForm = async () => {
     const data = await form.validateFields();
-    console.log(data);
+    const dataForm = await formProductRef.current?.finish();
+    const valid = await ingestService({...data, ...dataForm});
+    if (valid) {
+      message.success("Datos almacenados correctamente");
+      form.resetFields();
+      formProductRef.current?.reset();
+    }
+    else {
+      message.error("Hubo un error al almacenar los datos");
+    }
   }
 
   const changeClient = (register: SelectType) => {
@@ -63,8 +76,8 @@ const FormPromotor = () => {
     <>
       <Title level={3}>Ingreso - Reporte de venta</Title>
       <Divider />
-      <Row gutter={[ 20, 20 ]}>
-        <Col xs={16}>
+      <Row gutter={[ 20, 50 ]}>
+        <Col xs={24} md={16}>
           <Form 
             name="basic" 
             form={form}
@@ -126,7 +139,7 @@ const FormPromotor = () => {
             <Card title="Corte" style={{marginTop: 10}} size="small">
               <Form.Item
                 label="Tipo de corte"
-                name="cut_type"
+                name="cutType"
                 rules={[{ required: true, message: 'Por favor seleccione el tipo de corte' }]}
               >
                 <SelectSearch placeholder="Seleccione tipo de corte" initialData={cutData} />
@@ -140,12 +153,12 @@ const FormPromotor = () => {
               </Form.Item>
             </Card>
           </Form>
-          <FormProducts getExtraData={getExtraData} />
+          <FormProducts getExtraData={getExtraData} ref={formProductRef} />
           <Divider />
           <Button type="primary" icon={<SendOutlined />} onClick={sendForm}>Enviar</Button>
         </Col>
-        <Col xs={8}>
-          <Alert message="Fecha de creación de la lista" description={new Date().toDateString()} />
+        <Col xs={24} md={8}>
+          <Resume />
         </Col>
       </Row>
     </>

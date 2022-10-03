@@ -1,18 +1,32 @@
 import { MinusCircleOutlined, PlusCircleFilled, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Popconfirm, Space } from "antd";
-import { Fragment, useState } from "react";
+import { forwardRef, Fragment, useImperativeHandle, useState } from "react";
+import { ProductInterface } from "../../shared/services/ingest.service";
 import SelectSearch from "../UI/atoms/select_search";
 
 interface Props {
   getExtraData?: () => any;
 }
+export interface FormProductRef {
+  finish: () => Promise<{ products: ProductInterface[] }>;
+  reset: () => void;
+}
 
-const FormProducts = ({getExtraData} : Props) => {
+const FormProducts = forwardRef<FormProductRef, Props>(({getExtraData}, ref) => {
   const [ form ] = Form.useForm();
-  const finish = async () => {
+  const finish = async (): Promise<{ products: ProductInterface[] }> => {
     await form.validateFields();
-    console.log('Received values of form:', form.getFieldsValue());
+    return form.getFieldsValue() as {products: ProductInterface[]};
   };
+
+  const reset = () => {
+    form.resetFields();
+  }
+
+  useImperativeHandle(ref, () => ({
+    finish,
+    reset
+  }));
 
   return (
     <Card style={{marginTop: "10px"}} title="Productos" size="small">
@@ -23,7 +37,7 @@ const FormProducts = ({getExtraData} : Props) => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
       >
-        <Form.List name="users" >
+        <Form.List name="products" >
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => (
@@ -83,11 +97,9 @@ const FormProducts = ({getExtraData} : Props) => {
           )}
         </Form.List>
       </Form>
-        <Button type="primary" onClick={finish}>
-          Submit
-        </Button>
     </Card>
   );
 }
+);
 
 export default FormProducts;
