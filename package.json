@@ -1,16 +1,23 @@
 {
-    "private": true,
-    "name": "example-monorepo",
-    "engines": {
-        "node": "16"
-    },
-    "scripts": {
-        "dev:client": "yarn workspace frontend dev",
-        "dev:server": "yarn workspace backend start:dev"
-    },
-    "workspaces": ["backend", "frontend"],
-    "dependencies": {
-      "@nestjs/mapped-types": "*",
-        "concurrently": "4.1.0"
-    }
+  "private": true,
+  "name": "example-monorepo",
+  "engines": {
+    "node": "16"
+  },
+  "scripts": {
+    "dev:client": "yarn workspace frontend dev",
+    "dev:server": "yarn workspace backend start:dev",
+    "build:client": "yarn workspace frontend build",
+    "build:server": "yarn workspace backend build",
+    "run:client": "yarn workspace frontend preview",
+    "run:server": "yarn workspace backend build"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "dependencies": {
+    "@nestjs/mapped-types": "*",
+    "concurrently": "4.1.0"
+  }
 }

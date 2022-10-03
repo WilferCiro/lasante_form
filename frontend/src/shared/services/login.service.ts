@@ -8,7 +8,7 @@ interface Response {
 
 export const loginService = async (username: string, password: string): Promise<Response | null> => {
   try{
-    const data = await axios.post('http://localhost:3000/auth/login', {username, password});
+    const data = await axios.post('/auth/login', {username, password});
     if (data.status >= 200 && data.status < 300) {
       localStorage.setItem('token', data.data.token);
       return data.data;
@@ -27,7 +27,7 @@ interface ResponseProfile {
 
 export const profileService = async (): Promise<ResponseProfile | null> => {
   try{
-    const data = await axios.get('http://localhost:3000/users/profile');
+    const data = await axios.get('/users/profile');
     if (data.status >= 200 && data.status < 300) {
       return data.data;
     }

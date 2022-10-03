@@ -20,7 +20,7 @@ interface DataInterface {
 
 export const ingestService = async (dataIngest: DataInterface): Promise<boolean> => {
   try{
-    const data = await axios.post('http://localhost:3000/headers', dataIngest);
+    const data = await axios.post('/headers', dataIngest);
     if (data.status >= 200 && data.status < 300) {
       return true;
     }

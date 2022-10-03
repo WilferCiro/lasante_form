@@ -40,57 +40,59 @@ const FormProducts = forwardRef<FormProductRef, Props>(({getExtraData}, ref) => 
         <Form.List name="products" >
           {(fields, { add, remove }) => (
             <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Card size="small" key={key} extra={[
-                  <Popconfirm
-                    key="item1"
-                    title="¿Realmente Desea eliminar este producto de la lista?"
-                    onConfirm={() => remove(name)}
-                    okText="Si"
-                    cancelText="No"
-                  >
-                    <MinusCircleOutlined />
-                  </Popconfirm>                  
-                ]}>
-                  <Form.Item
-                    {...restField}
-                    label="Sucursal"
-                    name={[name, 'sucursal']}
-                    rules={[{ required: true, message: 'Missing first name' }]}
-                  >
-                    <SelectSearch placeholder="Buscar sucursal" endpoint="sucursals" getExtraData={getExtraData} />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    label="Descripción"
-                    name={[name, 'description']}
-                    rules={[{ required: true, message: 'Missing last name' }]}
-                  >
-                    <SelectSearch placeholder="Buscar producto" endpoint="products" getExtraData={getExtraData} />
-                  </Form.Item>
-                  <Space key={key} style={{ display: 'flex', marginBottom: 8, width: "100%" }} align="baseline">
+              <div style={{ maxHeight: "50vh", overflow: "auto"}}>
+                {fields.map(({ key, name, ...restField }, index: number) => (
+                  <Card size="small" key={key} title={"Producto " + (index + 1)} extra={[
+                    <Popconfirm
+                      key="item1"
+                      title="¿Realmente Desea eliminar este producto de la lista?"
+                      onConfirm={() => remove(name)}
+                      okText="Si"
+                      cancelText="No"
+                    >
+                      <MinusCircleOutlined />
+                    </Popconfirm>                  
+                  ]}>
                     <Form.Item
                       {...restField}
-                      label="Unidades"
-                      name={[name, 'quantity']}
+                      label="Sucursal"
+                      name={[name, 'sucursal']}
                       rules={[{ required: true, message: 'Missing first name' }]}
                     >
-                      <Input placeholder="Unidades" />
+                      <SelectSearch placeholder="Buscar sucursal" endpoint="sucursals" getExtraData={getExtraData} />
                     </Form.Item>
                     <Form.Item
                       {...restField}
-                      label="Monto"
-                      name={[name, 'ammount']}
+                      label="Descripción"
+                      name={[name, 'description']}
                       rules={[{ required: true, message: 'Missing last name' }]}
                     >
-                      <Input placeholder="Monto" />
+                      <SelectSearch placeholder="Buscar producto" endpoint="products" getExtraData={getExtraData} />
                     </Form.Item>
-                  </Space>
-                </Card>
-              ))}
+                    <Space key={key} style={{ display: 'flex', marginBottom: 8, width: "100%" }} align="baseline">
+                      <Form.Item
+                        {...restField}
+                        label="Unidades"
+                        name={[name, 'quantity']}
+                        rules={[{ required: true, message: 'Missing first name' }]}
+                      >
+                        <Input placeholder="Unidades" />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        label="Monto"
+                        name={[name, 'ammount']}
+                        rules={[{ required: true, message: 'Missing last name' }]}
+                      >
+                        <Input placeholder="Monto" />
+                      </Form.Item>
+                    </Space>
+                  </Card>
+                ))}
+              </div>
               <Form.Item>
                 <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                  Nuevo producto
+                  ({fields.length}) Nuevo producto
                 </Button>
               </Form.Item>
             </>

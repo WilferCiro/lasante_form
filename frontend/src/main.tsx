@@ -8,6 +8,8 @@ import ContextProviderAuth from './shared/context';
 import { BrowserRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 
+
+axios.defaults.baseURL = import.meta.env.VITE_HOST;
 axios.interceptors.request.use(
   (req) => {
     const token = localStorage.getItem("token");
